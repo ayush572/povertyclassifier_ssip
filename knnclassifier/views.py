@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import Graph
 import json
+import os
 
 # getting the model
 
@@ -50,7 +51,7 @@ def predictImage(req):
     features_2D = features.reshape(features.shape[0], -1)
 
     # Get the top predicted class
-    # best model new is the already trained knn classifier model
+    # classifier_model is the already trained knn classifier model
     with model_graph.as_default():
         with tf_session.as_default():
             predictions = classifier_model.predict(features_2D)
@@ -59,6 +60,8 @@ def predictImage(req):
     predicted_class = predictions[0]
 
     predicted_label = labelInfo[str(predicted_class)]
+
+    print('filepathnm is', filepathnm)  
 
 
     context = {'filepathnm': filepathnm, 'predicted_class': predicted_label}

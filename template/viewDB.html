@@ -2,6 +2,9 @@
 
 {% block content%}
 
-<h3>List of Uploaded and tested images {{listofImagesPath}}</h3>
+{% for i in listofImagesPath %}
+<img src={{i}} style="width: 200px; height: 150px"/> - <br>
+{% endfor %}
+
 
 {% endblock %}
