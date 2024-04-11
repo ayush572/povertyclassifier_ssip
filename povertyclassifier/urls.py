@@ -18,8 +18,18 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import re_path
 from knnclassifier import views
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^$', views.index, name='homepage')
+    re_path('^$', views.index, name='homepage'),
+    re_path('predictImage', views.predictImage, name="predictImage"),
+    re_path('viewDataBase', views.viewDataBase, name='viewDataBase')
 ]
+
+
+# currently only for the development purpose
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
