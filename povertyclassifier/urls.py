@@ -27,7 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('^$', views.index, name='homepage'),
     re_path('predictImage', views.predictImage, name="predictImage"),
-    re_path('viewDataBase', views.viewDataBase, name='viewDataBase')
+    re_path('viewDataBase', views.viewDataBase, name='viewDataBase'),
+    re_path('save_prediction', views.save_prediction, name='save_prediction')
 ]
 
 

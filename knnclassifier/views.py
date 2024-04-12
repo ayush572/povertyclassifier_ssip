@@ -73,3 +73,21 @@ def viewDataBase(req):
     listofImagesPath=['./media/'+i for i in listofImages]
     context = {'listofImagesPath':listofImagesPath}
     return render(req, "viewDB.html", context)
+
+from .models import Addpred
+
+def save_prediction(request):
+    if request.method == 'POST':
+        # img_path = request.POST.get('filePath')  # Assuming the file input field is named 'filePath'
+        # Assuming the file input field is named 'filePath'
+        img_path = request.FILES.get('filePath')
+        prediction = request.POST.get('predicted_class')  # Assuming the predicted class is sent as a POST parameter
+        print('views.py image', img_path)
+        print('views.py predicted_class', prediction)
+        Addpred.objects.create(img_path=img_path, prediction=prediction)
+        # Optionally, you can redirect the user to another page after saving the data
+        # return redirect('some-url-name')  # Replace 'some-url-name' with the name of the URL pattern you want to redirect to
+    else:
+        # Handle GET requests if needed
+        print('Not Saved')
+        pass

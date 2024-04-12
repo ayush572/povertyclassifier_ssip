@@ -26,10 +26,11 @@
             display: flex;
             flex-direction: column;
         }
-        .container {
-            /* flex: 1; */
-            overflow-y: auto; /* Allow scrolling content */
-        }
+        /* Apply custom styles for the scrollable container */
+     .scrollable-container {
+     max-height: calc(100vh - 20vh); /* header - footer height */
+     overflow-y: auto;
+     }
         footer {
             background-color: #E5B8F4;
             padding: 20px 0;
@@ -93,14 +94,14 @@
      <!-- HOME -->
 
 
-<div class="container">
+<div class="container" style="max-height: calc(100vh - 28vh); overflow-y: auto;">
      {% block content %}
      {% endblock %}
     
 </div>
 
      <!-- FOOTER -->
-     <footer style="background-color: #DCD7C9; padding: 0px 0;">
+     <footer style="background-color: #DCD7C9; padding: 0px 0; height: 18vh">
           <div class="container">
               <div class="row">
                   <div class="col-md-6">
@@ -114,14 +115,8 @@
                           <li>Ms. Niva Naik</li>
                       </ul>
                   </div>
-                  <!-- <div class="col-md-4">
-                      <h5>Links</h5>
-                      <ul>
-                          <li><a href="#">Save</a></li>
-                      </ul>
-                  </div> -->
               </div>
-              <div class="row" style="margin-top: 30px;">
+              <div class="row" style="margin-top: 20px;">
                   <div class="col-md-12 text-center">
                       <p>&copy; 2024 Poverty Estimation. All Rights Reserved</p>
                   </div>

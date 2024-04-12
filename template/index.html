@@ -11,7 +11,7 @@
   action="predictImage"
 >
   {% csrf_token %}
-  <div class="col-md-8 col-sm-2" style="margin-left: 0px;">
+  <div class="col-md-6 col-sm-2" style="margin-left: 0px;">
     <label for="fname">Upload ImageFile here</label>
   </div>
   <input
@@ -24,7 +24,9 @@
       border-radius: 5px;
       margin-bottom: 10px;
     "
+    onchange="displaySubmitButton()"
   /><br /><br />
+  
   <input
     id="submitButton"
     type="submit"
@@ -37,8 +39,10 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      display: none; /* initially hidden */
     "
   />
+  
 </form>
 
 {% if not predicted_class %}
@@ -51,14 +55,67 @@
     document.getElementById("uploadMessage").style.display = "none";
     document.getElementById("classifyingMessage").style.display = "block";
   }
+
+  function displaySubmitButton() {
+    document.getElementById("submitButton").style.display = "block";
+  }
 </script>
 
 {% if predicted_class %}
 <h2>Classification by model is: {{ predicted_class }}</h2>
-{% endif %} {% if filepathnm %}
-<img src="{{ filepathnm }}" alt="imagenm" />
-{% else %}
-<!-- <h3>Upload Image</h3> -->
 {% endif %}
+{% if filepathnm %}
+<img src="{{ filepathnm }}" alt="imagenm" />
+{% endif %}
+{% if predicted_class %}
+<button id="saveButton" onclick="savePrediction()" style="margin: 15px 0px ;padding: 10px 20px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer; display: block;">Save</button>
+<script>
+  function savePrediction() {
+    var fileInput = document.querySelector('input[name="filePath"]');
+    
+    // Check if predicted_class is already set
+    if('{{ predicted_class }}' !== 'None') {
+        // If predicted_class is already set, proceed with form submission
+        submitForm(fileInput);
+    } else {
+        // If predicted_class is not set, wait for it to be set
+        waitForPrediction(fileInput);
+    }
+}
+
+function waitForPrediction(fileInput) {
+    // Check if predicted_class is set every 100 milliseconds
+    var intervalId = setInterval(function() {
+        if('{{ predicted_class }}' !== 'None') {
+            clearInterval(intervalId); // Stop checking
+            // Once predicted_class is set, proceed with form submission
+            submitForm(fileInput);
+        }
+    }, 100);
+}
+
+function submitForm(fileInput) {
+    fetch('save_prediction', {
+        method: 'POST',
+        body: JSON.stringify({ predicted_class: '{{ predicted_class }}', filepathnm: '{{filepathnm}}', filePath : fileInput }),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Prediction saved successfully!');
+        } else {
+            alert('Failed to save prediction!');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
+{% endif %}
+
+
 
 {% endblock %}
