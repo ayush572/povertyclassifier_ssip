@@ -1,10 +1,50 @@
 {% extends 'headerPage.html' %}
+{% load static %}
 
-{% block content%}
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
 
-{% for i in listofImagesPath %}
-<img src={{i}} style="width: 200px; height: 150px"/> - <br>
-{% endfor %}
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+    }
+</style>
+
+<table>
+    <tr>
+        <th>Image</th>
+        <th>Classification</th>
+    </tr>
+    {% for i in listofImagesPath %}
 
 
+    <tr>
+        <td>
+            <img src={{i}} style="width: 200px; height: 150px"/>
+        </td>
+        <td>Text from db</td>
+    </tr>
+    {% endfor %}
+    
+</table>
 {% endblock %}
+
+
+
