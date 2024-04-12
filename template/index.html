@@ -1,33 +1,64 @@
 {% extends 'headerPage.html' %}
-
 {% block content %}
 
-    <h2>Upload Image for classification</h2>
-    <br>
-    <!-- this predictImage action will have to go in the url section, and from there, the views.functino will be created -->
-    <form method="post" enctype="multipart/form-data" action="predictImage">
-        {% csrf_token %}
-        <div class="col-md-4 col-sm-4">
-            <label for="fname">Upload ImageFile here</label>
-        </div>
-        <input name="filePath" type="file"><br><br>
-        <input type="submit" value="Submit">
-    </form>
+<h2>Upload Image for classification</h2>
+<br />
+<!-- this predictImage action will have to go in the url section, and from there, the views.functino will be created -->
+<form
+  id="imageForm"
+  method="post"
+  enctype="multipart/form-data"
+  action="predictImage"
+>
+  {% csrf_token %}
+  <div class="col-md-8 col-sm-2" style="margin-left: 0px;">
+    <label for="fname">Upload ImageFile here</label>
+  </div>
+  <input
+    name="filePath"
+    id="filePath"
+    type="file"
+    style="
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    "
+  /><br /><br />
+  <input
+    id="submitButton"
+    type="submit"
+    value="Submit"
+    onclick="displayClassifyingMessage()"
+    style="
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    "
+  />
+</form>
 
-    {% if not predicted_class and not filepathnm%}
-        <h2>Upload Image</h2>
-    {% elif not predicted_class and filepathnm%}
-        <h2>Classifying...</h2>
-    {% endif %}
+{% if not predicted_class %}
+  <h2 id="uploadMessage">Upload Image</h2>
+  <h2 id="classifyingMessage" style="display: none">Classifying...</h2>
+{% endif %}
 
-    {% if predicted_class %}
-        <h2>Classification by model is: {{ predicted_class }}</h2>
-    {% endif %}
+<script>
+  function displayClassifyingMessage() {
+    document.getElementById("uploadMessage").style.display = "none";
+    document.getElementById("classifyingMessage").style.display = "block";
+  }
+</script>
 
-    {% if filepathnm %}
-        <img src="{{ filepathnm }}" alt="imagenm">
-    {% else %}
-        <h3>Upload Image</h3>
-    {% endif %}
-        
+{% if predicted_class %}
+<h2>Classification by model is: {{ predicted_class }}</h2>
+{% endif %} {% if filepathnm %}
+<img src="{{ filepathnm }}" alt="imagenm" />
+{% else %}
+<!-- <h3>Upload Image</h3> -->
+{% endif %}
+
 {% endblock %}
